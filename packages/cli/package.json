@@ -5,7 +5,7 @@
   "type": "module",
   "license": "MIT",
   "bin": {
-    "mugiew-method": "./bin/run.js"
+    "mugiew-method": "bin/run.js"
   },
   "exports": {
     ".": {
