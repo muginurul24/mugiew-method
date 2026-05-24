@@ -9,7 +9,7 @@
     "node": ">=24.0.0"
   },
   "bin": {
-    "mugiew-method": "./bin/run.js"
+    "mugiew-method": "bin/run.js"
   },
   "files": [
     "bin",
