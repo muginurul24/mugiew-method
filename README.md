@@ -2,23 +2,31 @@
 
 No implementation before clarity.
 
-Mugiew Method is an AI Governance and Autonomous Execution Framework for AI-assisted software projects. It is built to reduce AI coding chaos by making discovery, requirements, approval gates, task graphs, validation, review, and execution state explicit before autonomous implementation continues.
+Mugiew Method adalah AI Governance and Autonomous Execution Framework untuk project software yang dikerjakan dengan bantuan AI. Tujuannya bukan membuat AI menulis kode lebih cepat, tetapi membuat eksekusi AI lebih jelas, terkendali, bisa diaudit, dan lebih aman untuk dipelihara oleh manusia maupun agent AI berikutnya.
 
-This repository contains the TypeScript/Node.js CLI implementation.
+Package publik yang dipakai user hanya:
 
-## Why This Exists
+```bash
+npx mugiew-method install
+```
 
-AI coding tools are fast, but they often fail in predictable ways:
+User tidak perlu install package scoped/internal apa pun. Internal package tetap ada di repository ini untuk menjaga batas arsitektur, tetapi saat publish semua runtime internal di-vendor ke dalam package root `mugiew-method`.
 
-- implementation starts before requirements are clear
-- architecture decisions drift across long sessions
-- future agents lose context
-- edge cases and safety gates are skipped
-- generated code becomes hard for humans and future AI agents to maintain
+## Kenapa Mugiew Method Dibuat
 
-Mugiew Method treats software work as a governance and specification problem first, then an implementation problem.
+AI coding tools sering gagal di titik yang sama:
 
-Core principle:
+- mulai implementasi sebelum requirement jelas
+- kehilangan konteks setelah sesi panjang
+- membuat keputusan arsitektur yang berubah-ubah
+- melewatkan edge case, testing, dan security concern
+- menghasilkan UI atau kode yang terasa generik
+- sulit direview oleh manusia
+- sulit dilanjutkan oleh agent AI lain
+
+Mugiew Method memaksa project punya discovery, spesifikasi, approval gate, task graph, validasi, review, dan journal sebelum autonomous execution dianggap aman.
+
+Prinsip inti:
 
 ```txt
 Clarity before implementation.
@@ -26,118 +34,142 @@ Specification before execution.
 Understanding before generation.
 ```
 
-## What It Does
+## Apa Yang Dihasilkan
 
-Mugiew Method installs project-local governance files and provides CLI commands for:
-
-- creating/resuming discovery state
-- generating and approving PRD/specification artifacts
-- enforcing YOLO-RUN readiness gates
-- validating approval integrity
-- managing task dependency graphs
-- detecting dependency cycles
-- running bounded validation commands
-- scanning project files for governance violations
-- writing durable review and runtime journal entries
-- reporting machine-readable project status
-
-## Current Implementation Status
-
-Implemented:
-
-- project install flow
-- `_mugiew-method/` project artifact structure
-- root `AGENTS.md` generation
-- discovery bootstrap artifacts
-- ambiguity/confidence state contracts
-- PRD/spec/rules artifact generation
-- approval gate with SHA-256 artifact integrity
-- project status reporting
-- review-project scanning with path safety
-- task graph and cycle detection
-- YOLO-RUN gate denial
-- runtime task selection primitives
-- bounded validation runner
-- self-review primitives
-- npm release packaging smoke test
-
-Not yet implemented:
-
-- full adaptive conversational discovery runtime
-- full end-to-end YOLO-RUN implementation loop
-- validation command allowlist policy
-- complete public slash-command adapter layer
-
-Important: `create-prd` currently bootstraps discovery artifacts and state. It does not yet run full natural-language adaptive interrogation.
-
-## Project Structure
-
-```txt
-packages/
-  cli/                 oclif command adapter
-  core/                shared contracts, errors, paths, safe writes
-  discovery-engine/    discovery bootstrap, ambiguity, confidence
-  governance-engine/   install, PRD/spec generation, approval, status, review
-  execution-engine/    task graph, YOLO-RUN gates, validation, runtime review
-
-docs/                  generated project documentation
-_bmad/                 BMad workflow configuration
-_bmad-output/          planning, stories, retrospectives, project context
-bin/run.js             published root package entrypoint
-scripts/pack-smoke.mjs package release smoke test
-```
-
-`packages/cli` must stay thin. Business logic belongs in engine packages.
-
-## Requirements
-
-- Node.js `>=24.0.0`
-- pnpm `10.33.2`
-
-## Install From npm
-
-After publication:
-
-```bash
-npx mugiew-method install
-```
-
-Local development command:
-
-```bash
-node packages/cli/bin/run.js install
-```
-
-## Basic Workflow
-
-### 1. Install Mugiew Method In A Project
-
-```bash
-mugiew-method install
-```
-
-Creates project governance files:
+Saat dijalankan di root project, Mugiew Method membuat struktur governance lokal:
 
 ```txt
 AGENTS.md
 _mugiew-method/
   discovery/
+    answers.md
+    ambiguities.md
+    assumptions.md
+    confidence-report.md
   prd/
+    PRD.md
+    architecture.md
+    technical-spec.md
+    api-contracts.md
+    database-schema.md
+    execution-plan.md
+    testing-strategy.md
   tasks/
   journal/
   state/
+    ambiguity-report.json
+    dependency-graph.json
+    execution-metrics.json
+    project-state.json
   rules/
+    architecture-rules.md
+    coding-rules.md
+    testing-rules.md
+    ui-rules.md
 ```
 
-If installation already exists, the command reports detected files and does not overwrite them silently.
+`AGENTS.md` adalah AI constitution untuk project. File ini menjadi kontrak perilaku agent AI: aturan arsitektur, coding standard, testing requirement, forbidden patterns, UI rules, dan constraint eksekusi.
 
-### 2. Start Discovery / PRD Bootstrap
+## Status Implementasi Saat Ini
+
+Versi aktif: `0.1.2`
+
+Sudah ada:
+
+- installer project governance
+- root `AGENTS.md`
+- struktur `_mugiew-method/`
+- discovery bootstrap
+- ambiguity report contract
+- confidence report bootstrap
+- PRD/spec/rules artifact generation
+- approval gate dengan SHA-256 artifact integrity
+- project status reporting
+- review-project scanning dengan path safety
+- task graph dan cycle detection
+- YOLO-RUN gate denial
+- runtime task selection primitives
+- bounded validation runner
+- self-review primitives
+- package smoke test untuk `npx mugiew-method install`
+
+Belum ada:
+
+- full adaptive conversational discovery runtime
+- full autonomous YOLO-RUN implementation loop
+- validation command allowlist policy
+- slash-command adapter publik seperti `/create-prd`
+
+Penting: `create-prd` saat ini membuat atau melanjutkan discovery state. Command ini belum menjalankan percakapan adaptive discovery penuh.
+
+## Instalasi
+
+Jalankan dari root project yang ingin diberi Mugiew Method:
 
 ```bash
-mugiew-method create-prd
+npx mugiew-method install
 ```
 
-Creates or resumes:
+Untuk pin versi:
+
+```bash
+npx mugiew-method@0.1.2 install
+```
+
+Command ini akan:
+
+- membuat `AGENTS.md`
+- membuat folder `_mugiew-method/`
+- membuat file state awal
+- tidak overwrite install yang sudah ada secara diam-diam
+
+Jika install sudah ada, CLI akan melaporkan file yang terdeteksi dan berhenti tanpa mengubah file.
+
+## Cara Penggunaan
+
+Setelah install, command dipanggil dengan format:
+
+```bash
+npx mugiew-method <command>
+```
+
+Jika package sudah diinstall lokal/global, bisa juga:
+
+```bash
+mugiew-method <command>
+```
+
+### Command Utama
+
+| Command | Fungsi |
+| --- | --- |
+| `install` | Install file governance Mugiew Method ke project |
+| `create-prd` | Membuat atau melanjutkan discovery bootstrap |
+| `approve-prd` | Mengunci PRD jika readiness gate lolos |
+| `project-status` | Menampilkan status readiness project |
+| `project-status --json` | Menampilkan status machine-readable |
+| `review-project` | Menulis governance review ke journal |
+| `review-project --path <file>` | Review file tertentu |
+| `review-project --changed` | Review file yang berubah di git working tree |
+| `yolo-run` | Mengecek gate YOLO-RUN sebelum autonomous execution |
+
+## Workflow Dasar
+
+### 1. Install
+
+```bash
+npx mugiew-method install
+```
+
+Output sukses akan mencantumkan file yang dibuat.
+
+### 2. Mulai Discovery / PRD Bootstrap
+
+```bash
+npx mugiew-method create-prd
+```
+
+Command ini membuat atau melanjutkan:
 
 ```txt
 _mugiew-method/discovery/answers.md
@@ -147,7 +179,7 @@ _mugiew-method/discovery/confidence-report.md
 _mugiew-method/state/ambiguity-report.json
 ```
 
-Current phase output:
+Output akan menjelaskan scope saat ini:
 
 ```txt
 Discovery Phase: bootstrap-primitives
@@ -157,75 +189,120 @@ Adaptive Interrogation: pending
 ### 3. Approve PRD
 
 ```bash
-mugiew-method approve-prd
+npx mugiew-method approve-prd
 ```
 
-Approval succeeds only when readiness gates pass. The approval record stores content hashes for:
+Approval hanya berhasil jika gate lolos.
 
-- `PRD.md`
-- `confidence-report.md`
-- `ambiguity-report.json`
+Approval record menyimpan hash untuk:
 
-If any approved artifact changes later, YOLO-RUN is denied until re-approval.
+- `_mugiew-method/prd/PRD.md`
+- `_mugiew-method/discovery/confidence-report.md`
+- `_mugiew-method/state/ambiguity-report.json`
 
-### 4. Check Project Status
+Jika file yang sudah diapprove berubah, `yolo-run` akan ditolak sampai approval diperbarui.
 
-Human-readable:
+### 4. Cek Status Project
 
 ```bash
-mugiew-method project-status
+npx mugiew-method project-status
 ```
 
-Machine-readable:
+JSON output:
 
 ```bash
-mugiew-method project-status --json
+npx mugiew-method project-status --json
 ```
 
-Status reports approval state, confidence, ambiguity blockers, dependency graph blockers, runtime stop state, drift, and corrupt/missing state files.
+Status mencakup:
+
+- PRD status
+- approval integrity
+- confidence score
+- blocking ambiguity
+- dependency graph blocker
+- cycle detection
+- runtime stop state
+- corrupt atau missing state files
 
 ### 5. Review Project
 
-Review explicit files:
+Review file tertentu:
 
 ```bash
-mugiew-method review-project --path src/example.ts --path README.md
+npx mugiew-method review-project --path src/example.ts
 ```
 
-Review changed git files:
+Review beberapa file:
 
 ```bash
-mugiew-method review-project --changed
+npx mugiew-method review-project --path src/example.ts --path README.md
 ```
 
-The review scanner:
-
-- keeps reads inside project root
-- rejects symlink escapes
-- skips binary files
-- deduplicates inputs
-- reports scanned/skipped counts
-- writes review results into `_mugiew-method/journal/`
-
-### 6. Start YOLO-RUN Gate
+Review file yang berubah di git:
 
 ```bash
-mugiew-method yolo-run
+npx mugiew-method review-project --changed
 ```
 
-YOLO-RUN is allowed only when gates pass:
+Review scanner:
+
+- membaca file di dalam project root saja
+- menolak symlink escape
+- skip binary file
+- dedupe input path
+- mencatat scanned/skipped count
+- menulis hasil ke `_mugiew-method/journal/`
+
+### 6. Cek YOLO-RUN Gate
+
+```bash
+npx mugiew-method yolo-run
+```
+
+YOLO-RUN hanya boleh lanjut jika:
 
 - PRD approved
-- approval record valid and fresh
-- no blocking ambiguities
-- confidence threshold satisfied
-- task graph has no blocking cycles
+- approval record valid
+- approval artifact masih fresh
+- blocking ambiguity 0
+- confidence memenuhi threshold
+- dependency graph tidak punya cycle blocker
 
-If denied, the command exits with gate failure details and writes a journal entry.
+Jika gate gagal, command akan menampilkan alasan dan menulis journal denial.
+
+## Struktur Monorepo
+
+```txt
+packages/
+  cli/                 oclif command adapter
+  core/                shared contracts, errors, safe writes, paths
+  discovery-engine/    discovery bootstrap, ambiguity, confidence
+  governance-engine/   install, PRD/spec generation, approval, status, review
+  execution-engine/    task graph, YOLO-RUN gates, validation, review runtime
+
+docs/                  dokumentasi project
+_bmad/                 konfigurasi workflow BMad
+_bmad-output/          PRD, architecture, stories, retrospectives, context
+bin/run.js             entrypoint package publik
+scripts/               release dan package smoke scripts
+```
+
+Rule penting:
+
+- `packages/cli` hanya adapter command
+- business logic masuk engine package
+- shared schema/contract masuk `packages/core`
+- file write ke project user harus aman dan eksplisit
 
 ## Development
 
-Install dependencies:
+Requirement:
+
+- Node.js `>=24.0.0`
+- pnpm `10.33.2`
+
+Install dependency:
 
 ```bash
 pnpm install
@@ -240,14 +317,35 @@ pnpm build
 pnpm check
 ```
 
-Run local CLI:
+Run CLI lokal dari source:
 
 ```bash
-node packages/cli/bin/run.js
 node packages/cli/bin/run.js install
 node packages/cli/bin/run.js create-prd
 node packages/cli/bin/run.js project-status --json
 ```
+
+## Package Strategy
+
+Public package:
+
+```txt
+mugiew-method
+```
+
+Internal workspace package tetap private secara usage. User tidak perlu tahu, install, atau publish package internal tersebut secara terpisah.
+
+Internal packages tidak perlu diinstall user. Saat `prepack`, script akan:
+
+1. build semua workspace package
+2. copy compiled internal package ke folder vendor runtime
+3. pack root package `mugiew-method`
+
+Root package runtime dependencies publik hanya:
+
+- `@oclif/core`
+- `execa`
+- `zod`
 
 ## Package Smoke Test
 
@@ -255,24 +353,24 @@ node packages/cli/bin/run.js project-status --json
 pnpm pack:smoke
 ```
 
-The smoke test:
+Smoke test melakukan:
 
-1. builds workspace packages
-2. prepares self-contained root package vendor files
-3. packs only the root `mugiew-method` tarball
-4. installs the root tarball in a temporary project
-5. runs `mugiew-method install`
-6. verifies `AGENTS.md` and `_mugiew-method/` were created
+1. build workspace
+2. prepare vendor runtime files
+3. pack root package
+4. install tarball root ke temp project
+5. run `mugiew-method install`
+6. verify `AGENTS.md` dan `_mugiew-method/`
 
 ## Publishing
 
-Publish only the root package:
+Publish hanya root package:
 
 ```bash
 pnpm publish --access public --no-git-checks
 ```
 
-Before publishing:
+Sebelum publish:
 
 ```bash
 pnpm pack:smoke
@@ -280,17 +378,23 @@ pnpm check
 pnpm build
 ```
 
-## Package Strategy
+Test setelah publish:
 
-- `mugiew-method` is the only public package users need.
-- Internal workspace packages stay in this repository for architecture boundaries.
-- `prepack` builds the workspace and vendors internal package `dist` output into the root tarball.
-- The published root package has no public dependency on `@mugiew-method/*` packages.
-- User command stays simple: `npx mugiew-method install`.
+```bash
+tmpdir=$(mktemp -d)
+cd "$tmpdir"
+npx mugiew-method@0.1.2 install
+ls
+```
 
-## Documentation
+Harus muncul:
 
-Useful docs:
+```txt
+AGENTS.md
+_mugiew-method
+```
+
+## Dokumentasi Tambahan
 
 - [Project Overview](docs/project-overview.md)
 - [Architecture](docs/architecture.md)
