@@ -5,6 +5,7 @@ coverage/
 .DS_Store
 *.log
 *.tgz
+vendor/
 
 # Local/generated AI agent bundles; source workflow config lives under _bmad/.
 .agents/

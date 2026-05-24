@@ -25,8 +25,8 @@ _This file contains critical rules and patterns that AI agents must follow when 
 - CLI framework: oclif `^4.0.0`
 - Schema validation: Zod `4.4.3`
 - Process execution: Execa `9.6.1`
-- Workspace dependencies: `workspace:^` across internal packages; pack rewrites them to concrete semver.
-- Package state: root `mugiew-method` is the publishable NPX wrapper; internal `@mugiew-method/*` packages publish as runtime dependencies at matching versions.
+- Workspace dependencies: `workspace:^` across internal packages for local development.
+- Package state: root `mugiew-method` is the only public NPX package; internal packages are vendored into the root tarball during `prepack`.
 
 ## Critical Implementation Rules
 
@@ -82,8 +82,8 @@ _This file contains critical rules and patterns that AI agents must follow when 
 - For local CLI smoke tests, use `node packages/cli/bin/run.js <command>`.
 - Keep implementation artifacts and documentation in sync when changing product behavior.
 - When adding package exports, update `src/index.ts` and verify dependent packages import through package entrypoints.
-- Packaging strategy uses root `mugiew-method` wrapper plus internal runtime packages. Source manifests use `workspace:^`; `pnpm pack` rewrites those ranges to concrete semver in tarballs.
-- Validate release packaging with `pnpm pack:smoke`; it packs local tarballs, installs them in a temp project offline, runs `mugiew-method install`, and verifies generated project files.
+- Packaging strategy uses root `mugiew-method` only. `prepack` builds packages and runs `scripts/prepare-root-package.mjs` to vendor internal compiled packages.
+- Validate release packaging with `pnpm pack:smoke`; it packs the root tarball, installs it in a temp project, runs `mugiew-method install`, and verifies generated project files.
 - Treat `_bmad-output/project-context.md` and `docs/index.md` as primary AI orientation files.
 - Before changing gates or state contracts, inspect planning docs and existing story artifacts for intended policy.
 

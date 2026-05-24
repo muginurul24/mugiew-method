@@ -1,17 +1,19 @@
 # Package Release
 
-Mugiew Method publishes `mugiew-method` as the public NPX entry package.
+Mugiew Method publishes `mugiew-method` as the public NPX package.
 
 ## Package Strategy
 
-- `mugiew-method` is the root wrapper package and exposes `mugiew-method` through `bin/run.js`.
-- `@mugiew-method/cli` owns the oclif runtime and command adapters.
-- `@mugiew-method/core`, `@mugiew-method/discovery-engine`, `@mugiew-method/governance-engine`, and `@mugiew-method/execution-engine` are published runtime packages.
-- Source manifests use `workspace:^` for local development. `pnpm pack` rewrites those workspace ranges to concrete package versions in tarballs so published artifacts resolve outside the source workspace.
+- `mugiew-method` is the only package users install through NPX.
+- Internal packages remain workspace packages for development boundaries.
+- `prepack` runs `pnpm build` and `scripts/prepare-root-package.mjs`.
+- The prepare step vendors internal compiled packages under `vendor/node_modules/@mugiew-method/` inside the root tarball.
+- Root runtime dependencies are only external packages: `@oclif/core`, `execa`, and `zod`.
+- Published consumers do not need to install any `@mugiew-method/*` package.
 
 ## Publish Controls
 
-Each package declares `license: MIT` and `files` allowlists. Runtime packages include built `dist` output and package metadata. The root package includes the wrapper bin, README, LICENSE, and manifest.
+The root package declares `license: MIT` and a `files` allowlist. It includes the CLI bin, README, LICENSE, manifest, and generated vendor runtime files.
 
 ## Validation
 
@@ -23,4 +25,4 @@ pnpm pack:smoke
 pnpm check
 ```
 
-`pnpm pack:smoke` packs all runtime packages into local tarballs, installs those tarballs in a temporary project with offline resolution, runs `mugiew-method install`, and verifies `AGENTS.md` plus `_mugiew-method/` are created.
+`pnpm pack:smoke` packs the root package, installs it in a temporary project, runs `mugiew-method install`, and verifies `AGENTS.md` plus `_mugiew-method/` are created.

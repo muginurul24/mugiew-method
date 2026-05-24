@@ -1,6 +1,6 @@
 {
   "name": "mugiew-method",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "AI Governance & Autonomous Execution Framework.",
   "type": "module",
   "license": "MIT",
@@ -15,19 +15,22 @@
     "bin",
     "LICENSE",
     "README.md",
-    "package.json"
+    "package.json",
+    "vendor"
   ],
   "scripts": {
     "build": "pnpm -r --if-present build",
     "check": "pnpm typecheck && pnpm test",
     "lint": "pnpm -r --if-present lint",
     "pack:smoke": "node scripts/pack-smoke.mjs",
-    "prepack": "pnpm build",
+    "prepack": "pnpm build && node scripts/prepare-root-package.mjs",
     "test": "vitest run",
     "typecheck": "pnpm -r --if-present typecheck"
   },
   "dependencies": {
-    "@mugiew-method/cli": "workspace:^"
+    "@oclif/core": "^4.0.0",
+    "execa": "9.6.1",
+    "zod": "4.4.3"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

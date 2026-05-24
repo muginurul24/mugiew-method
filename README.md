@@ -258,23 +258,18 @@ pnpm pack:smoke
 The smoke test:
 
 1. builds workspace packages
-2. packs all runtime packages into local tarballs
-3. installs only the root `mugiew-method` tarball in a temporary project
-4. uses pnpm overrides to resolve internal package tarballs offline
+2. prepares self-contained root package vendor files
+3. packs only the root `mugiew-method` tarball
+4. installs the root tarball in a temporary project
 5. runs `mugiew-method install`
 6. verifies `AGENTS.md` and `_mugiew-method/` were created
 
 ## Publishing
 
-Publish internal packages first, then root wrapper:
+Publish only the root package:
 
 ```bash
-pnpm --filter @mugiew-method/core publish --access public --no-git-checks
-pnpm --filter @mugiew-method/discovery-engine publish --access public --no-git-checks
-pnpm --filter @mugiew-method/governance-engine publish --access public --no-git-checks
-pnpm --filter @mugiew-method/execution-engine publish --access public --no-git-checks
-pnpm --filter @mugiew-method/cli publish --access public --no-git-checks
-pnpm publish --no-git-checks
+pnpm publish --access public --no-git-checks
 ```
 
 Before publishing:
@@ -287,11 +282,11 @@ pnpm build
 
 ## Package Strategy
 
-- `mugiew-method` is the public NPX wrapper package.
-- `@mugiew-method/cli` owns the oclif runtime.
-- `@mugiew-method/core`, `@mugiew-method/discovery-engine`, `@mugiew-method/governance-engine`, and `@mugiew-method/execution-engine` are runtime packages.
-- Source manifests use `workspace:^`.
-- `pnpm pack` rewrites workspace ranges to concrete semver in packed artifacts.
+- `mugiew-method` is the only public package users need.
+- Internal workspace packages stay in this repository for architecture boundaries.
+- `prepack` builds the workspace and vendors internal package `dist` output into the root tarball.
+- The published root package has no public dependency on `@mugiew-method/*` packages.
+- User command stays simple: `npx mugiew-method install`.
 
 ## Documentation
 

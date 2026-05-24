@@ -78,8 +78,8 @@ node packages/cli/bin/run.js yolo-run
 
 Current repository has npm release packaging support:
 
-- root `mugiew-method` is the public NPX wrapper package
-- internal `@mugiew-method/*` packages publish as runtime dependencies
-- source dependencies use `workspace:^`; `pnpm pack` rewrites them to concrete semver
+- root `mugiew-method` is the only public NPX package users need
+- internal workspace packages are vendored into the root tarball during `prepack`
+- the published root package does not depend on public `@mugiew-method/*` packages
 - package manifests declare MIT license metadata, file allowlists, and prepack build hooks
 - verify release artifacts with `pnpm pack:smoke`

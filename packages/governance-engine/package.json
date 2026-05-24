@@ -1,6 +1,6 @@
 {
   "name": "@mugiew-method/governance-engine",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Governance and specification services for Mugiew Method.",
   "type": "module",
   "license": "MIT",

@@ -5,15 +5,6 @@ import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const repoRoot = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
-const workspacePackages = [
-  "packages/core",
-  "packages/discovery-engine",
-  "packages/governance-engine",
-  "packages/execution-engine",
-  "packages/cli",
-  "."
-];
-
 const tempRoot = fs.mkdtempSync(
   path.join(os.tmpdir(), "mugiew-method-pack-smoke-")
 );
@@ -24,27 +15,17 @@ fs.mkdirSync(smokeProject);
 
 try {
   run("pnpm", ["build"], repoRoot);
+  run("node", ["scripts/prepare-root-package.mjs"], repoRoot);
 
-  const tarballs = new Map();
-  for (const packagePath of workspacePackages) {
-    const packageRoot = path.join(repoRoot, packagePath);
-    const result = parsePackJson(
-      run(
-        "pnpm",
-        ["pack", "--json", "--pack-destination", tarballDir],
-        packageRoot
-      )
-    );
-    tarballs.set(
-      result.name,
-      path.isAbsolute(result.filename)
-        ? result.filename
-        : path.join(tarballDir, result.filename)
-    );
-  }
+  const result = parsePackJson(
+    run("pnpm", ["pack", "--json", "--pack-destination", tarballDir], repoRoot)
+  );
+  const tarballPath = path.isAbsolute(result.filename)
+    ? result.filename
+    : path.join(tarballDir, result.filename);
 
-  writeSmokePackage(smokeProject, tarballs);
-  run("pnpm", ["install", "--offline"], smokeProject);
+  writeSmokePackage(smokeProject, tarballPath);
+  run("npm", ["install"], smokeProject);
   run(binaryPath(smokeProject, "mugiew-method"), ["install"], smokeProject);
 
   assertExists(path.join(smokeProject, "AGENTS.md"));
@@ -57,17 +38,7 @@ try {
   throw error;
 }
 
-function writeSmokePackage(projectRoot, tarballs) {
-  const rootTarball = tarballs.get("mugiew-method");
-  if (!rootTarball) {
-    throw new Error("Missing root mugiew-method tarball");
-  }
-
-  const overrides = {};
-  for (const [name, tarballPath] of tarballs) {
-    overrides[name] = `file:${tarballPath}`;
-  }
-
+function writeSmokePackage(projectRoot, rootTarball) {
   fs.writeFileSync(
     path.join(projectRoot, "package.json"),
     `${JSON.stringify(
@@ -76,9 +47,6 @@ function writeSmokePackage(projectRoot, tarballs) {
         type: "module",
         dependencies: {
           "mugiew-method": `file:${rootTarball}`
-        },
-        pnpm: {
-          overrides
         }
       },
       null,
