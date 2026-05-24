@@ -1,0 +1,45 @@
+{
+  "name": "@mugiew-method/cli",
+  "version": "0.1.0",
+  "description": "Mugiew Method CLI adapter.",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "mugiew-method": "./bin/run.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./bin/run.js": "./bin/run.js"
+  },
+  "files": [
+    "bin",
+    "dist",
+    "package.json"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "oclif": {
+    "bin": "mugiew-method",
+    "commands": {
+      "strategy": "explicit",
+      "target": "./dist/commands/index.js",
+      "identifier": "commands"
+    }
+  },
+  "dependencies": {
+    "@mugiew-method/core": "workspace:^",
+    "@mugiew-method/discovery-engine": "workspace:^",
+    "@mugiew-method/execution-engine": "workspace:^",
+    "@mugiew-method/governance-engine": "workspace:^",
+    "@oclif/core": "^4.0.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepack": "pnpm build",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  }
+}

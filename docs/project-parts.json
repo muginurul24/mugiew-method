@@ -1,0 +1,72 @@
+{
+  "repository_type": "monorepo",
+  "generated_at": "2026-05-24T12:22:11+07:00",
+  "parts": [
+    {
+      "part_id": "cli",
+      "name": "CLI",
+      "root_path": "packages/cli",
+      "project_type_id": "cli",
+      "language": "TypeScript",
+      "role": "oclif command adapter"
+    },
+    {
+      "part_id": "core",
+      "name": "Core",
+      "root_path": "packages/core",
+      "project_type_id": "library",
+      "language": "TypeScript",
+      "role": "shared contracts, errors, filesystem primitives"
+    },
+    {
+      "part_id": "discovery-engine",
+      "name": "Discovery Engine",
+      "root_path": "packages/discovery-engine",
+      "project_type_id": "library",
+      "language": "TypeScript",
+      "role": "discovery state, ambiguity, contradiction, confidence"
+    },
+    {
+      "part_id": "governance-engine",
+      "name": "Governance Engine",
+      "root_path": "packages/governance-engine",
+      "project_type_id": "library",
+      "language": "TypeScript",
+      "role": "install, PRD/spec generation, approval, status, review"
+    },
+    {
+      "part_id": "execution-engine",
+      "name": "Execution Engine",
+      "root_path": "packages/execution-engine",
+      "project_type_id": "library",
+      "language": "TypeScript",
+      "role": "task graph, YOLO-RUN gate, validation, self-review, runtime stop"
+    }
+  ],
+  "integration_points": [
+    {
+      "from": "cli",
+      "to": "governance-engine",
+      "type": "direct TypeScript import",
+      "details": "install, approval, project status, review-project commands"
+    },
+    {
+      "from": "cli",
+      "to": "discovery-engine",
+      "type": "direct TypeScript import",
+      "details": "create-prd command starts/resumes discovery"
+    },
+    {
+      "from": "cli",
+      "to": "execution-engine",
+      "type": "direct TypeScript import",
+      "details": "yolo-run command evaluates runtime gate"
+    },
+    {
+      "from": "all engines",
+      "to": "core",
+      "type": "direct TypeScript import",
+      "details": "shared paths, schemas, errors, safe writes"
+    }
+  ]
+}

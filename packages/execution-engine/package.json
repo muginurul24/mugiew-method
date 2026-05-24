@@ -1,0 +1,29 @@
+{
+  "name": "@mugiew-method/execution-engine",
+  "version": "0.1.0",
+  "description": "Autonomous execution services for Mugiew Method.",
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "package.json"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@mugiew-method/core": "workspace:^",
+    "execa": "9.6.1"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepack": "pnpm build",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  }
+}

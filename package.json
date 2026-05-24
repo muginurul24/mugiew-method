@@ -1,0 +1,37 @@
+{
+  "name": "mugiew-method",
+  "version": "0.1.0",
+  "description": "AI Governance & Autonomous Execution Framework.",
+  "type": "module",
+  "license": "MIT",
+  "packageManager": "pnpm@10.33.2",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "bin": {
+    "mugiew-method": "./bin/run.js"
+  },
+  "files": [
+    "bin",
+    "LICENSE",
+    "README.md",
+    "package.json"
+  ],
+  "scripts": {
+    "build": "pnpm -r --if-present build",
+    "check": "pnpm typecheck && pnpm test",
+    "lint": "pnpm -r --if-present lint",
+    "pack:smoke": "node scripts/pack-smoke.mjs",
+    "prepack": "pnpm build",
+    "test": "vitest run",
+    "typecheck": "pnpm -r --if-present typecheck"
+  },
+  "dependencies": {
+    "@mugiew-method/cli": "workspace:^"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.0",
+    "vitest": "^4.0.0"
+  }
+}

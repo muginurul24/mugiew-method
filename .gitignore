@@ -1,0 +1,17 @@
+node_modules/
+dist/
+coverage/
+.turbo/
+.DS_Store
+*.log
+*.tgz
+
+# Local/generated AI agent bundles; source workflow config lives under _bmad/.
+.agents/
+.claude/
+.cline/
+.kiro/
+
+# Personal BMad installer answers.
+_bmad/config.user.toml
+_bmad/custom/config.user.toml

@@ -1,0 +1,94 @@
+# generated: 2026-05-24T12:41:50+0700
+# last_updated: 2026-05-24T14:08:00+0700
+# project: mugiew-method
+# project_key: NOKEY
+# tracking_system: file-system
+# story_location: _bmad-output/implementation-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Epic Status Transitions:
+#   - backlog -> in-progress: Automatically when first story is created (via create-story)
+#   - in-progress -> done: Manually when all stories reach 'done' status
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review (via Dev's code-review workflow)
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+#
+# WORKFLOW NOTES:
+# ===============
+# - Epic transitions to 'in-progress' automatically when first story is created
+# - Stories can be worked in parallel if team capacity allows
+# - Developer typically creates next story after previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
+
+generated: 2026-05-24T12:41:50+0700
+last_updated: 2026-05-24T15:34:00+0700
+project: mugiew-method
+project_key: NOKEY
+tracking_system: file-system
+story_location: _bmad-output/implementation-artifacts
+
+development_status:
+  epic-1: done
+  1-1-set-up-initial-project-from-oclif-starter-template: done
+  1-2-define-core-file-contracts-and-project-paths: done
+  1-3-implement-safe-filesystem-writes: done
+  1-4-implement-install-command: done
+  1-5-detect-existing-installation: done
+  epic-1-retrospective: optional
+  epic-2: done
+  2-1-create-discovery-state-contracts: done
+  2-2-implement-create-prd-discovery-entry: done
+  2-3-track-concern-coverage: done
+  2-4-classify-ambiguities-and-assumptions: done
+  2-5-detect-contradictions-and-risky-decisions: done
+  2-6-calculate-confidence-report: done
+  epic-2-retrospective: optional
+  epic-3: done
+  3-1-generate-prd-artifact: done
+  3-2-generate-specification-artifacts: done
+  3-3-generate-agents-md-constitution: done
+  3-4-generate-rules-templates: done
+  3-5-enforce-approval-gate: done
+  3-6-record-force-mode-policy: done
+  epic-3-retrospective: optional
+  epic-4: done
+  4-1-define-task-file-contract: done
+  4-2-generate-granular-tasks: done
+  4-3-maintain-dependency-graph: done
+  4-4-rebuild-tasks-safely: done
+  epic-4-retrospective: optional
+  epic-5: done
+  5-1-implement-project-status-command: done
+  5-2-validate-work-against-agents-md: done
+  5-3-detect-architecture-drift: done
+  5-4-implement-review-project-command: done
+  epic-5-retrospective: optional
+  epic-6: done
+  6-1-enforce-yolo-run-gate-denial: done
+  6-2-select-next-unblocked-task: done
+  6-3-run-task-validation-commands: done
+  6-4-run-self-review-before-completion: done
+  6-5-stop-runtime-safely-and-update-state: done
+  epic-6-retrospective: done
+  epic-7: done
+  7-1-make-cli-package-npm-release-ready: done
+  7-2-validate-approval-record-integrity-before-yolo-run: done
+  7-3-harden-validation-command-execution: done
+  7-4-make-project-review-cli-scan-relevant-files: done
+  7-5-add-dependency-graph-cycle-detection: done
+  7-6-clarify-discovery-runtime-scope: done
+  epic-7-retrospective: done
